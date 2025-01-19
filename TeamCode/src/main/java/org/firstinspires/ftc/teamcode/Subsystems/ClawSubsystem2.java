@@ -16,14 +16,14 @@ public class ClawSubsystem2 {
     public Servo wrist;
     public RevColorSensorV3 color;
 
-    final int MAX_ARM_DEGREES = 300;
-    final int MIN_ARM_DEGREES = 300;
-    final int MAX_CLAW_DEGREES = 300;
-    final int MIN_ClAW_DEGREES = 300;
-    final int MAX_WRIST_DEGREES = 300;
-    final int MIN_WRIST_DEGREES = 300;
-    final double open = 0;
-    final double close = 90;
+   public final int MAX_ARM_DEGREES = 300;
+    public final int MIN_ARM_DEGREES = 300;
+    public final int MAX_CLAW_DEGREES = 300;
+    public final int MIN_ClAW_DEGREES = 300;
+    public final int MAX_WRIST_DEGREES = 300;
+    public final int MIN_WRIST_DEGREES = 300;
+    public final double open = 0;
+    public final double close = 90;
 
 
 
@@ -91,13 +91,13 @@ public class ClawSubsystem2 {
         }
     }
 
-    public void triggerArm(double Vdegrees) {
-        double lstarget = gamepad2.right_trigger;
+    public void triggerArm(double Vdegrees, double target) {
+        double lstarget = target;
         if (lstarget > 0) {
-            if (gamepad2.right_trigger > lstarget) {
-                stabilizeArm(Vdegrees, toDegrees(gamepad2.right_trigger));
+            if (target > lstarget) {
+                stabilizeArm(Vdegrees, toDegrees(target));
             } else {
-                lstarget = gamepad2.right_trigger;
+                lstarget = target;
             }
         }
     }
