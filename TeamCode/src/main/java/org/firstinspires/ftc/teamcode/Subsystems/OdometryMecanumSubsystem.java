@@ -3,20 +3,15 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import static org.firstinspires.ftc.teamcode.utils.calculateRotation;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-import org.firstinspires.ftc.teamcode.Subsystems.utils.MiniPID;
-
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import java.lang.Math;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Subsystems.utils.MiniPID;
 
+public class OdometryMecanumSubsystem {
 
-
-public class AdvancedMecanumSubsystem {
 
     private static AdvancedMecanumSubsystem instance;
     private HardwareMap hardwareMap;
@@ -48,14 +43,14 @@ public class AdvancedMecanumSubsystem {
     public double speed=1;
     public double baseSpeed=1;
 
-    public GyroscopeSubsystem gyroscope;
+    public OdometrySubsystem gyroscope;
 
     public Gamepad gamepad;
 
     public String BLue = "Blue";
     public String Red = "Red";
 
-    public AdvancedMecanumSubsystem(HardwareMap hardwareMap, Telemetry telemetry, Gamepad gamepad){
+    public OdometryMecanumSubsystem(HardwareMap hardwareMap, Telemetry telemetry, Gamepad gamepad){
         this.hardwareMap=hardwareMap;
         this.telemetry = telemetry;
 
@@ -64,15 +59,16 @@ public class AdvancedMecanumSubsystem {
         BackLeftMotor = hardwareMap.get(DcMotor.class, "BL");
         BackRightMotor = hardwareMap.get(DcMotor.class, "BR");
 
+
         FrontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-        BackRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        BackRightMotor.setDirection(DcMotor.Direction.REVERSE);
 
         FrontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FrontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BackLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BackRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        gyroscope = new GyroscopeSubsystem(hardwareMap, telemetry);
+        gyroscope = new OdometrySubsystem(hardwareMap, telemetry);
 
         this.gamepad = gamepad;
     }
@@ -81,6 +77,7 @@ public class AdvancedMecanumSubsystem {
     public void teleopPeriodic(String aliance){
         //IMUMethods();
         gyr = gyroscope.getRotation();
+        gyroscope.update();
         //gyr=0;
         telemetry.addData("gyr",gyr);
         if(gamepad.back){

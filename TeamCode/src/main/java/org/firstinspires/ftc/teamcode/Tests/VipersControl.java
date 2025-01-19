@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Tests;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Subsystems.ViperGPT;
+import org.firstinspires.ftc.teamcode.Subsystems.ViperSubsystem2;
 
 @TeleOp
 public class VipersControl extends LinearOpMode {
@@ -20,7 +20,7 @@ public class VipersControl extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        ViperGPT viper = new ViperGPT(hardwareMap, 0.001, 0, 0.01, 0.01, 0, 0);
+        ViperSubsystem2 viper = new ViperSubsystem2(hardwareMap, 0.001, 0, 0.01, 0.01, 0, 0);
 
         waitForStart();
 

@@ -1,12 +1,15 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import android.location.GnssAntennaInfo;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Subsystems.utils.MiniPID;
 
-public class ViperGPT {
+public class ViperSubsystem2 {
     public DcMotor angleML;
     public DcMotor angleMR;
     public DcMotor viperL;
@@ -26,7 +29,7 @@ public class ViperGPT {
 
     public double targetTicks = 0;
 
-    public ViperGPT(HardwareMap hardwareMap,double PA, double IA, double DA, double P, double I, double D) {
+    public ViperSubsystem2(HardwareMap hardwareMap, double PA, double IA, double DA, double P, double I, double D) {
         // Initialize the motor
         angleML = hardwareMap.get(DcMotor.class, "angleML");
         angleMR = hardwareMap.get(DcMotor.class, "angleMR");
@@ -50,16 +53,18 @@ public class ViperGPT {
         viperL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         viperR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        angleMR.setDirection(DcMotorSimple.Direction.REVERSE);
+        angleML.setDirection(DcMotorSimple.Direction.REVERSE);
         viperL.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         // Initialize PID controller
         pidAL = new MiniPID(PA, IA, DA);
-        pidAL.setOutputLimits(-0.8, 0.8); // Motor power from -1 to 1
+        pidAL.setOutputLimits(-1, 1); // Motor power from -1 to 1
+        pidAL.setSetpointRange(15);
 
         pidAR = new MiniPID(PA, IA, DA);
-        pidAR.setOutputLimits(-0.8, 0.8); // Motor power from -1 to 1
+        pidAR.setOutputLimits(-1, 1); // Motor power from -1 to 1
+        pidAR.setSetpointRange(15);
 
         pidVL = new MiniPID(P, I, D);
         pidVL.setOutputLimits(-0.8, 0.8); // Motor power from -1 to 1
@@ -91,6 +96,7 @@ public class ViperGPT {
      * @param targetAngle The desired angle in degrees
      */
     public void moveToAngle(double targetAngle) {
+        //double angle = normalizeA(targetAngle);
         targetTicks = angleToTicks(targetAngle);
         pidAR.setSetpoint(targetTicks);
         pidAL.setSetpoint(targetTicks);
@@ -170,5 +176,38 @@ public class ViperGPT {
         angleMR.setPower(0);
         pidAL.reset();
         pidAR.reset();
+    }
+
+    public void moveToHigh(double v, double a){
+        moveToAngle(a);
+        extendV(toTks(v));
+    }
+
+    public void periodic(Gamepad gamepad2){
+        if (gamepad2.a){//Canasta
+            if (gamepad2.dpad_up){
+                moveToHigh(134, 58);
+            } else if (gamepad2.dpad_right){
+                moveToHigh(102, 46);
+            } else if (gamepad2.dpad_down){
+                moveToHigh(25, 0);
+            }
+        } else if (gamepad2.b){//Barra
+            if (gamepad2.dpad_up){
+                moveToHigh(98, 44);
+            } else if (gamepad2.dpad_right){
+                moveToHigh(79, 26);
+            } else if (gamepad2.dpad_down){
+                moveToHigh(25, 0);
+            }
+        } else if (gamepad2.right_stick_y > 0) {
+            extendV(getExtension() + gamepad2.right_stick_y);
+        }else if (gamepad2.right_stick_y < 0) {
+            extendV(getExtension() - (gamepad2.right_stick_y*-1));
+        }
+    }
+
+    public double normalizeA(double angle){
+        return angle + 90;
     }
 }

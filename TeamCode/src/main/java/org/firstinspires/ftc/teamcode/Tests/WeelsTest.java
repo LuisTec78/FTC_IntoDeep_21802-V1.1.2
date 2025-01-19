@@ -5,6 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.GoBildaPinpointDriver;
+import org.firstinspires.ftc.teamcode.TeleOp.DriverOdometry;
+
 @TeleOp
 public class WeelsTest extends LinearOpMode {
     @Override
@@ -14,6 +17,10 @@ public class WeelsTest extends LinearOpMode {
         DcMotor FR = hardwareMap.get(DcMotor.class, "FR");
         DcMotor BL = hardwareMap.get(DcMotor.class, "BL");
         DcMotor BR = hardwareMap.get(DcMotor.class, "BR");
+
+        GoBildaPinpointDriver odo = hardwareMap.get(GoBildaPinpointDriver.class, "odo" );
+
+        odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
 
         waitForStart();
         while (opModeIsActive()){
@@ -36,6 +43,13 @@ public class WeelsTest extends LinearOpMode {
                 BL.setPower(0);
                 BR.setPower(0);
             }
+
+            odo.update();
+
+            telemetry.addData("y", odo.getEncoderY());
+            telemetry.addData("x", odo.getEncoderX());
+            telemetry.addData("heading", odo.getHeading());
+            telemetry.update();
 
         }
 

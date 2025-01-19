@@ -22,8 +22,8 @@ public class ClawSubsystem2 {
     public final int MIN_ClAW_DEGREES = 300;
     public final int MAX_WRIST_DEGREES = 300;
     public final int MIN_WRIST_DEGREES = 300;
-    public final double open = 0;
-    public final double close = 90;
+    public final double open = 10;
+    public final double close = 45;
 
 
 
@@ -99,6 +99,26 @@ public class ClawSubsystem2 {
             } else {
                 lstarget = target;
             }
+        }
+    }
+
+    public void periodic(Gamepad gamepad2){
+        if (gamepad2.right_trigger > 0) {
+            moveArmToDegrees(gamepad2.right_trigger * 180);
+        }else if(gamepad2.left_trigger > 0) {
+            moveArmToDegrees(180 + (gamepad2.left_trigger * 90));
+        }
+
+        if (gamepad2.right_bumper) {
+            moveWristToDegrees(0);
+        }else if (gamepad2.left_bumper) {
+            moveWristToDegrees(90);
+        }
+
+        if (gamepad2.x){
+            openCLaw();
+        } else if (gamepad2.y){
+            closeCLaw();
         }
     }
 

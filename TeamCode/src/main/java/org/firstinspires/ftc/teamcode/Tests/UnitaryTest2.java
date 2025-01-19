@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Subsystems.ViperGPT;
+import org.firstinspires.ftc.teamcode.Subsystems.ViperSubsystem2;
 
 @Autonomous
 public class UnitaryTest2 extends LinearOpMode {
@@ -14,11 +12,11 @@ public class UnitaryTest2 extends LinearOpMode {
     public void runOpMode() {
 
         waitForStart();
-        ViperGPT vipers = new ViperGPT(hardwareMap, 0.001, 0, 0.0001, 0.01, 0, 0);
+        ViperSubsystem2 vipers = new ViperSubsystem2(hardwareMap, 0.001, 0, 0.03, 0.01, 0, 0);
 
         while (opModeIsActive()){
 
-            vipers.moveToAngle(90);
+            vipers.moveToAngle(45);
 
 
             telemetry.addData("motorL", vipers.angleML.getCurrentPosition());

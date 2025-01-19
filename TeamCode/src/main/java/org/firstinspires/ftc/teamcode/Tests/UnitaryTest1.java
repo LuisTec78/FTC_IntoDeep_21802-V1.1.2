@@ -26,12 +26,12 @@ public class UnitaryTest1 extends LinearOpMode {
         angleML.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         angleMR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-         angleMR.setDirection(DcMotorSimple.Direction.REVERSE);
+         angleML.setDirection(DcMotorSimple.Direction.REVERSE);
 
         waitForStart();
         while (opModeIsActive()){
 
-            LApid.setOutputLimits(-0.7, 0.7);
+            /*LApid.setOutputLimits(-0.7, 0.7);
             RApid.setOutputLimits(-0.7, 0.7);
 
             LApid.setSetpoint(294);
@@ -40,7 +40,7 @@ public class UnitaryTest1 extends LinearOpMode {
             RAOutput = RApid.getOutput(-angleML.getCurrentPosition());
 
             angleML.setPower(LAOutput);
-            angleMR.setPower(RAOutput);
+            angleMR.setPower(RAOutput);*/
 
             telemetry.addData("motor L", angleML.getCurrentPosition());
             telemetry.addData("motor R", angleMR.getCurrentPosition());
