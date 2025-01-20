@@ -223,8 +223,11 @@ public class ViperSubsystem2 {
         }else if (gamepad2.dpad_left){
             moveToAngle(90);
             extendV(28);
-        } else if () {
-            
+        } else if (gamepad2.dpad_right) {
+            moveToAngle(90);
+            extendV(23);
+        } else if (gamepad2.dpad_down) {
+            moveToAngle(0);
         }
 
     }
