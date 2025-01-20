@@ -67,10 +67,10 @@ public class ViperSubsystem2 {
         pidAR.setSetpointRange(15);
 
         pidVL = new MiniPID(P, I, D);
-        pidVL.setOutputLimits(-0.8, 0.8); // Motor power from -1 to 1
+        pidVL.setOutputLimits(-0.6, 0.6); // Motor power from -1 to 1
 
         pidVR = new MiniPID(P, I, D);
-        pidVR.setOutputLimits(-0.8, 0.8); // Motor power from -1 to 1
+        pidVR.setOutputLimits(-0.9, 0.9); // Motor power from -1 to 1
     }
 
     /**
@@ -108,6 +108,11 @@ public class ViperSubsystem2 {
         // Apply the power to the motor
         angleML.setPower(powerL);
         angleMR.setPower(powerR);
+
+        /*if(isAtTarget(5)){
+            angleML.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            angleMR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }*/
 
     }
 
@@ -184,7 +189,7 @@ public class ViperSubsystem2 {
     }
 
     public void periodic(Gamepad gamepad2){
-        if (gamepad2.a){//Canasta
+        /*if (gamepad2.a){//Canasta
             if (gamepad2.dpad_up){
                 moveToHigh(134, 58);
             } else if (gamepad2.dpad_right){
@@ -200,11 +205,28 @@ public class ViperSubsystem2 {
             } else if (gamepad2.dpad_down){
                 moveToHigh(25, 0);
             }
-        } else if (gamepad2.right_stick_y > 0) {
-            extendV(getExtension() + gamepad2.right_stick_y);
-        }else if (gamepad2.right_stick_y < 0) {
-            extendV(getExtension() - (gamepad2.right_stick_y*-1));
+        } else*/ if (gamepad2.right_stick_y > 0 && getCurrentAngle() < 15) {
+            extendV(gamepad2.right_stick_y * 25);
+        }else if (gamepad2.right_stick_y > 0) {
+            extendV(gamepad2.right_stick_y * 70);
         }
+        
+        if (gamepad2.a){
+            moveToAngle(90);
+        } else if (gamepad2.b) {
+            moveToAngle(0);
+        }
+        
+        if (gamepad2.dpad_up){
+            moveToAngle(90);
+            extendV(70);
+        }else if (gamepad2.dpad_left){
+            moveToAngle(90);
+            extendV(28);
+        } else if () {
+            
+        }
+
     }
 
     public double normalizeA(double angle){

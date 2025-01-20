@@ -12,11 +12,11 @@ public class UnitaryTest2 extends LinearOpMode {
     public void runOpMode() {
 
         waitForStart();
-        ViperSubsystem2 vipers = new ViperSubsystem2(hardwareMap, 0.001, 0, 0.03, 0.01, 0, 0);
+        ViperSubsystem2 vipers = new ViperSubsystem2(hardwareMap, 0.005, 0, 0.025, 0.01, 0, 0);
 
         while (opModeIsActive()){
 
-            vipers.moveToAngle(45);
+            vipers.moveToAngle(90);
 
 
             telemetry.addData("motorL", vipers.angleML.getCurrentPosition());

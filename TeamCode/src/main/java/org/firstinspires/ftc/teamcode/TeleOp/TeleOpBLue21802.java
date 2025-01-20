@@ -20,7 +20,7 @@ public class TeleOpBLue21802 extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()){
-            drive.periodicDrive(gamepad1);
+            drive.periodicDrive(gamepad1.right_stick_x, -gamepad1.right_stick_y, gamepad1.left_stick_x,gamepad1.a, gamepad1.left_bumper, gamepad1.right_bumper);
 
             viper.periodic(gamepad2);
             claw.periodic(gamepad2);

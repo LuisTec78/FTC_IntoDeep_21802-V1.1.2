@@ -22,8 +22,8 @@ public class ClawSubsystem2 {
     public final int MIN_ClAW_DEGREES = 300;
     public final int MAX_WRIST_DEGREES = 300;
     public final int MIN_WRIST_DEGREES = 300;
-    public final double open = 10;
-    public final double close = 45;
+    public final double open = 20;
+    public final double close = 0;
 
 
 
@@ -32,6 +32,9 @@ public class ClawSubsystem2 {
         claw = hardwareMap.get(Servo.class, "claw");
         wrist = hardwareMap.get(Servo.class, "wrist");
         color = hardwareMap.get(RevColorSensorV3.class, "color");
+
+        claw.setDirection(Servo.Direction.REVERSE);
+
     }
 
     public double normalizeD(double degrees){
@@ -47,11 +50,11 @@ public class ClawSubsystem2 {
     }
 
     public void moveCLawToDegrees(double degrees){
-        claw.setPosition(normalizeD(degrees));
+        claw.setPosition(degrees);
     }
 
     public void moveWristToDegrees(double degrees){
-        wrist.setPosition(normalizeD(degrees));
+        wrist.setPosition(degrees);
     }
 
     public void reestartArm(){
@@ -77,7 +80,6 @@ public class ClawSubsystem2 {
     }
 
     public void autoPosWrist(){
-        reestartWrist();
     for (int i = MIN_WRIST_DEGREES;color.getDistance(DistanceUnit.CM) != 4 && toDegrees(wrist.getPosition()) != MAX_WRIST_DEGREES; i += 5){
             moveWristToDegrees(i);
         }

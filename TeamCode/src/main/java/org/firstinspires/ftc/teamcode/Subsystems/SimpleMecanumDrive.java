@@ -27,15 +27,13 @@ public class SimpleMecanumDrive {
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
     }
-        // Obtener valores de los joysticks
-    public void getGamepadVal(Gamepad gamepad1) {
-        x = reduce(gamepad1.left_stick_x, 0.3);  // Eje X del joystick izquierdo
-        y = reduce(-gamepad1.left_stick_y, 0.3); // Eje Y del joystick izquierdo (invertido)
-        rotation = reduce(gamepad1.right_stick_x * -1, 0.3); // Eje X del joystick derecho
-    }
 
         // Calcular el poder de los motores
-    public void drive() {
+    public void drive(double vx, double vy, double vr) {
+        x = vx;  // Eje X del joystick izquierdo
+        y = vy; // Eje Y del joystick izquierdo (invertido)
+        rotation = vr * -1; // Eje X del joystick derecho
+
         double frontLeftPower = y + x - rotation;
         double frontRightPower = y - x + rotation;
         double backLeftPower = y - x - rotation;
@@ -83,20 +81,26 @@ public class SimpleMecanumDrive {
                     }
     }
 
-    public void periodicDrive(Gamepad gamepad1){
-        getGamepadVal(gamepad1);
-        drive();
-         if (gamepad1.a){
+    public void periodicDrive(double x,double y,double r, boolean stop,boolean left,boolean right){
+         if (stop){
              stop();
+         } else if (left){
+             setMotorPower(0.3, -0.3, -0.3, 0.3);
+         }else if (right){
+             setMotorPower(-0.3, 0.3, 0.3, -0.3);
+         } else {
+             drive(x,y,r);
          }
     }
 
-    public double reduce(double v,double reduce){
-        if (v < 0){
+    /*public double reduce(double v,double reduce){
+        if (v > 0.1){
+            return v - reduce;
+        }else if (v < -0.1){
             return v + reduce;
         }else {
-            return v - reduce;
+            return 0;
         }
-    }
+    }*/
 
 }
