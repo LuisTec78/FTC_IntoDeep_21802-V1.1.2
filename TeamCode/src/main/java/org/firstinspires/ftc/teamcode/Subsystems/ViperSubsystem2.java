@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import android.location.GnssAntennaInfo;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -60,17 +58,15 @@ public class ViperSubsystem2 {
         // Initialize PID controller
         pidAL = new MiniPID(PA, IA, DA);
         pidAL.setOutputLimits(-1, 1); // Motor power from -1 to 1
-        pidAL.setSetpointRange(15);
 
         pidAR = new MiniPID(PA, IA, DA);
         pidAR.setOutputLimits(-1, 1); // Motor power from -1 to 1
-        pidAR.setSetpointRange(15);
 
         pidVL = new MiniPID(P, I, D);
-        pidVL.setOutputLimits(-0.6, 0.6); // Motor power from -1 to 1
+        pidVL.setOutputLimits(-0.7, 0.7); // Motor power from -1 to 1
 
         pidVR = new MiniPID(P, I, D);
-        pidVR.setOutputLimits(-0.9, 0.9); // Motor power from -1 to 1
+        pidVR.setOutputLimits(-0.6, 0.6); // Motor power from -1 to 1
     }
 
     /**
@@ -97,6 +93,10 @@ public class ViperSubsystem2 {
      */
     public void moveToAngle(double targetAngle) {
         //double angle = normalizeA(targetAngle);
+        if (targetAngle > 90){
+            targetAngle = 90;
+        }
+
         targetTicks = angleToTicks(targetAngle);
         pidAR.setSetpoint(targetTicks);
         pidAL.setSetpoint(targetTicks);
@@ -109,19 +109,19 @@ public class ViperSubsystem2 {
         angleML.setPower(powerL);
         angleMR.setPower(powerR);
 
-        /*if(isAtTarget(5)){
+        if(isAtTarget(5)){
             angleML.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            angleMR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        }*/
+            angleMR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);;
+        }
 
     }
 
     public double toCM(double ticks){
-        return ticks/HighRev;
+        return ticks*HighRev/TICKS_PER_HIGH;
     }
 
     public double toTks(double CM){
-        return CM/TICKS_PER_HIGH;
+        return CM*TICKS_PER_HIGH/HighRev;
     }
 
     public double getExtension(){
@@ -140,11 +140,11 @@ public class ViperSubsystem2 {
         extendV(toTks(targetLght/ Math.cos(getCurrentAngle())));
     }
 
-    public void extendV(double tks) {
-        pidVL.setSetpoint(tks);
+    public void extendV(double cm) {
+        pidVL.setSetpoint(toTks(cm));
         viperL.setPower(pidVL.getOutput(viperL.getCurrentPosition()));
 
-        pidVR.setSetpoint(tks);
+        pidVR.setSetpoint(toTks(cm));
         viperR.setPower(pidVR.getOutput(viperR.getCurrentPosition()));
     }
 
@@ -205,34 +205,66 @@ public class ViperSubsystem2 {
             } else if (gamepad2.dpad_down){
                 moveToHigh(25, 0);
             }
-        } else*/ if (gamepad2.right_stick_y > 0 && getCurrentAngle() < 15) {
-            extendV(gamepad2.right_stick_y * 25);
-        }else if (gamepad2.right_stick_y > 0) {
-            extendV(gamepad2.right_stick_y * 70);
-        }
+        } else if (-gamepad2.right_stick_y > 0) {
+            extendV(25 +(-gamepad2.right_stick_y * 25));
+        }else if (-gamepad2.right_stick_y < 0) {
+            extendV(-gamepad2.right_stick_y * 25);
+        }*/
+
+        extendV(-gamepad2.left_stick_y * 30);
         
         if (gamepad2.a){
             moveToAngle(90);
         } else if (gamepad2.b) {
             moveToAngle(0);
-        }
+        } //else if ()
         
         if (gamepad2.dpad_up){
-            moveToAngle(90);
             extendV(70);
         }else if (gamepad2.dpad_left){
-            moveToAngle(90);
             extendV(28);
         } else if (gamepad2.dpad_right) {
-            moveToAngle(90);
             extendV(23);
-        } else if (gamepad2.dpad_down) {
-            moveToAngle(0);
+        } /*else if (gamepad2.left_stick_button) {
+            angleML.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            angleMR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }*/else if (gamepad2.share){
+            angleML.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            angleMR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
     }
 
-    public double normalizeA(double angle){
-        return angle + 90;
+    public double normalizeA(double targetA){
+        double i = getCurrentAngle();
+        while (getCurrentAngle() > targetA){
+            i = getCurrentAngle() +5;
+            return i;
+        }
+        while (getCurrentAngle() < targetA){
+            return i+=5;
+        }
+        return targetA;
+    }
+
+    public void aumentAngle(double targetAngle) {
+        //double angle = normalizeA(targetAngle);
+        targetTicks = angleToTicks(normalizeA(targetAngle));
+        pidAR.setSetpoint(targetTicks);
+        pidAL.setSetpoint(targetTicks);
+
+        // Calculate PID output
+        double powerL = pidAL.getOutput(angleML.getCurrentPosition());
+        double powerR = pidAR.getOutput(angleML.getCurrentPosition());
+
+        // Apply the power to the motor
+        angleML.setPower(powerL);
+        angleMR.setPower(powerR);
+
+        if(isAtTarget(5)){
+            angleML.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            angleMR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
+
     }
 }

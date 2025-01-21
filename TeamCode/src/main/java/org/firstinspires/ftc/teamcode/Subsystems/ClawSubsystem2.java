@@ -22,7 +22,7 @@ public class ClawSubsystem2 {
     public final int MIN_ClAW_DEGREES = 300;
     public final int MAX_WRIST_DEGREES = 300;
     public final int MIN_WRIST_DEGREES = 300;
-    public final double open = 20;
+    public final double open = 7;
     public final double close = 0;
 
 

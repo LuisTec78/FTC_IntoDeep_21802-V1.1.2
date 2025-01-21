@@ -12,7 +12,7 @@ import kotlinx.coroutines.selects.WhileSelectKt;
 public class Mecanismos extends LinearOpMode {
     @Override
     public void runOpMode() {
-        ViperSubsystem2 viper = new ViperSubsystem2(hardwareMap, 0.0047, 0, 0.0333444, 0.01, 0, 0);
+        ViperSubsystem2 viper = new ViperSubsystem2(hardwareMap, 0.001, 0, 0.0001, 0.01, 0, 0);
         ClawSubsystem2 claw = new ClawSubsystem2(hardwareMap, gamepad2);
 
         waitForStart();
@@ -20,8 +20,9 @@ public class Mecanismos extends LinearOpMode {
             viper.periodic(gamepad2);
             claw.periodic(gamepad2);
 
-            telemetry.addData("angle", viper.getCurrentAngle());
-            telemetry.addData("angleTks", viper.angleML.getCurrentPosition());
+            telemetry.addData("targetExt", gamepad2.left_stick_y * 50);
+            telemetry.addData("extension", viper.getExtension());
+            telemetry.update();
         }
     }
 }

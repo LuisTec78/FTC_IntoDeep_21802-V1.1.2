@@ -16,8 +16,8 @@ public class ViperExtención extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()){
-            claw.moveArmToDegrees(10);
-            viper.extendV(viper.TICKS_PER_HIGH);
+            claw.moveArmToDegrees(45);
+            viper.extendV(30);
 
             telemetry.addData("viperL", viper.viperL.getCurrentPosition());
             telemetry.addData("viperR", viper.viperR.getCurrentPosition());
