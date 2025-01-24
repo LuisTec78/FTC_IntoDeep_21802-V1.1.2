@@ -21,7 +21,7 @@ public class VipersControl extends LinearOpMode {
         claw.periodic(gamepad2);
 
 
-        telemetry.addData("extencion", viper.getExtension());
+        telemetry.addData("extention", viper.getExtension());
         telemetry.addData("angle", viper.getCurrentAngle());
 
         telemetry.addData("motorL", viper.angleML.getCurrentPosition());
@@ -30,6 +30,8 @@ public class VipersControl extends LinearOpMode {
         telemetry.addData("angle", viper.getCurrentAngle());
 
         telemetry.addData("targetA", viper .targetTicks);
+
+        telemetry.addData("targetLgth", viper.targetLgth);
 
         telemetry.update();
     }

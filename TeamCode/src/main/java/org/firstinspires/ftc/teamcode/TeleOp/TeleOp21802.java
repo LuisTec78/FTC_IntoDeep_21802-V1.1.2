@@ -26,12 +26,18 @@ public class TeleOp21802 extends LinearOpMode {
             viper.periodic(gamepad2);
             claw.periodic(gamepad2);
 
-            telemetry.addData("motorL", viper.angleML.getCurrentPosition());
-            telemetry.addData("motorR", viper.angleMR.getCurrentPosition());
+            telemetry.addData("angleL", viper.angleML.getCurrentPosition());
+            telemetry.addData("angleR", viper.angleMR.getCurrentPosition());
+
+            telemetry.addData("viperL", viper.viperL.getCurrentPosition());
+            telemetry.addData("viperR", viper.viperR.getCurrentPosition());
 
             telemetry.addData("angle", viper.getCurrentAngle());
 
+            telemetry.addData("length", viper.getExtension());
+
             telemetry.addData("targetA", viper.targetTicks);
+
 
             telemetry.update();
 

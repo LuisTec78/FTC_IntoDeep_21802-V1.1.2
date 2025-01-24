@@ -87,7 +87,7 @@ public class ClawSubsystem2 {
 
     public void PkUp( double Vdegrees){
         openCLaw();
-        stabilizeArm(Vdegrees, 270);
+        moveArmToDegrees(0);
         if (color.getDistance(DistanceUnit.CM) <= 4){
             closeCLaw();
         }

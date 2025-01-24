@@ -18,8 +18,8 @@ public class ViperSubsystem2 {
     public MiniPID pidUR;
     public MiniPID pidDL;
     public MiniPID pidDR;
-    private MiniPID pidVL;
-    private MiniPID pidVR;
+    public MiniPID pidVL;
+    public MiniPID pidVR;
 
     // Constants
     public final int TICKS_PER_DEGREE = 1176; // 560 ticks per degree
@@ -27,9 +27,9 @@ public class ViperSubsystem2 {
     public final double HighRev = 9.5;
     public final double TICKS_PER_HIGH = 384.5;
     public final double MAX_LENGTH = 30;
-    public double targetLght = 0;
 
     public double targetTicks = 0;
+    public double targetLgth = 0;
 
     public ViperSubsystem2(HardwareMap hardwareMap, double PUp, double IUp, double DUp/*double PDw, double IDw, double DDw*/, double P, double I, double D) {
         // Initialize the motor
@@ -160,27 +160,29 @@ public class ViperSubsystem2 {
     }
 
     public void extendV(double cm) {
-        pidVL.setSetpoint(toTks(cm));
+        targetLgth = toTks(cm);
+
+        pidVL.setSetpoint(targetLgth);
         viperL.setPower(pidVL.getOutput(viperL.getCurrentPosition()));
 
-        pidVR.setSetpoint(toTks(cm));
+        pidVR.setSetpoint(targetLgth);
         viperR.setPower(pidVR.getOutput(viperR.getCurrentPosition()));
     }
 
     public double getCurCA() {
         return Math.cos(getCurrentAngle()) / getExtension();
     }
-    public void autoExtendV() {
+    /*public void autoExtendV() {
         extendV(toTks(targetLght / Math.cos(getCurrentAngle())));
-    }
+    }*/
     public double getCA(double hip) {
         return Math.cos(getCurrentAngle()) / hip;
     }
-    public void changeTLgth(double length) {
+    /*public void changeTLgth(double length) {
         if ((length + targetLght) <= MAX_LENGTH) {
             targetLght += length;
         }
-    }
+    }*/
 
     /**
      * Get the current angle of the bar
@@ -249,9 +251,9 @@ public class ViperSubsystem2 {
         }
 
         if (getCurrentAngle() > 20) {
-            extendV(-gamepad2.left_stick_y * 80);
+            extendV(-gamepad2.left_stick_y * 120);
         } else {
-            extendV(-gamepad2.left_stick_y * 30);
+            extendV(-gamepad2.left_stick_y * 80);
         }
 
         /*if (gamepad2.dpad_up) {
