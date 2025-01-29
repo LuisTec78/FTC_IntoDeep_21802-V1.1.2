@@ -22,8 +22,8 @@ public class ClawSubsystem2 {
     public final int MIN_ClAW_DEGREES = 300;
     public final int MAX_WRIST_DEGREES = 300;
     public final int MIN_WRIST_DEGREES = 300;
-    public final double open = 7;
-    public final double close = 0;
+    public final double open = 0;
+    public final double close = 2.5;
 
 
 
@@ -85,9 +85,9 @@ public class ClawSubsystem2 {
         }
     }
 
-    public void PkUp( double Vdegrees){
+    public void PkUp( double degrees){
         openCLaw();
-        moveArmToDegrees(0);
+        moveArmToDegrees(degrees);
         if (color.getDistance(DistanceUnit.CM) <= 4){
             closeCLaw();
         }
@@ -119,7 +119,7 @@ public class ClawSubsystem2 {
 
         if (gamepad2.x){
             openCLaw();
-        } else if (gamepad2.y){
+        } else if (gamepad2.b){
             closeCLaw();
         }
     }

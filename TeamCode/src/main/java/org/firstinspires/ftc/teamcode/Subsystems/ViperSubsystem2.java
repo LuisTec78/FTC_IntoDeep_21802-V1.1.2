@@ -24,7 +24,7 @@ public class ViperSubsystem2 {
     // Constants
     public final int TICKS_PER_DEGREE = 1176; // 560 ticks per degree
     public final int DEGREES = 360; // Motor gear / Bar gear
-    public final double HighRev = 9.5;
+    public final double HighRev = 9;
     public final double TICKS_PER_HIGH = 384.5;
     public final double MAX_LENGTH = 30;
 
@@ -238,22 +238,54 @@ public class ViperSubsystem2 {
                 moveToHigh(25, 0);
             }
         } else if (-gamepad2.right_stick_y > 0) {
-            extendV(25 +(-gamepad2.right_stick_y * 25));
+            extendV(getExtension() + (-gamepad2.left_stick_y * 10));
         }else if (-gamepad2.right_stick_y < 0) {
-            extendV(-gamepad2.right_stick_y * 25);
+            extendV(getExtension() - (-gamepad2.left_stick_y * 10));
+        }*/
+
+        /*if (gamepad2.a){
+            moveToAngle(90);
+        } else {
+            moveToAngle(0);
         }*/
 
 
         if (gamepad2.a) {
-            moveToAngle(88);
-        } else{
-            moveToAngle(0);
+            angleML.setPower(0.4);
+            angleMR.setPower(0.4);
+        } else if (gamepad2.y){
+            angleML.setPower(-0.2);
+            angleMR.setPower(-0.2);
+        } else if (gamepad2.dpad_left){
+            viperL.setPower(0);
+            viperR.setPower(0);
+
+            viperL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            viperR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+            viperL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            viperR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            viperL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            viperR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        } else if (gamepad2.dpad_right) {
+            angleML.setPower(0);
+            angleMR.setPower(0);
+
+            angleML.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            angleMR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+            angleML.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            angleMR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            angleML.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            angleMR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
         if (getCurrentAngle() > 20) {
-            extendV(-gamepad2.left_stick_y * 120);
-        } else {
             extendV(-gamepad2.left_stick_y * 80);
+        } else {
+            extendV(-gamepad2.left_stick_y * 30);
         }
 
         /*if (gamepad2.dpad_up) {

@@ -13,7 +13,7 @@ public class TeleOp21802 extends LinearOpMode {
     @Override
     public void runOpMode(){
         //SimpleMecanumDrive drive = new SimpleMecanumDrive(hardwareMap);
-        ViperSubsystem2 viper = new ViperSubsystem2(hardwareMap,  0.001, 0, 0, 0.01, 0, 0);
+        ViperSubsystem2 viper = new ViperSubsystem2(hardwareMap,  0.003, 0, 0, 0.01, 0, 0);
         ClawSubsystem2 claw = new ClawSubsystem2(hardwareMap, gamepad2);
         MecanumDriveSubsystem drive = new MecanumDriveSubsystem(hardwareMap, gamepad1, telemetry);
 

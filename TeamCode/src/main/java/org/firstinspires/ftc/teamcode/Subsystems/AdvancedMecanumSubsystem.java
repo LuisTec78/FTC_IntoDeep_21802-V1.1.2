@@ -45,7 +45,7 @@ public class AdvancedMecanumSubsystem {
 
     public double gyr;
 
-    public double speed=1;
+    public double speed=0.5;
     public double baseSpeed=1;
 
     public GyroscopeSubsystem gyroscope;
@@ -299,6 +299,15 @@ public class AdvancedMecanumSubsystem {
         if (targetAngle>360){
             targetAngle=targetAngle-360;
         }
+    }
+
+    public void moveStrafe(){
+
+        frontLeftPower = speed*(1);
+        backLeftPower = speed*(1);
+        backRightPower = speed*(1);
+        frontRightPower = speed*(1);
+
     }
 
 }
